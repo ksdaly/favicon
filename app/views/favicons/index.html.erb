@@ -5,7 +5,7 @@
 </row>
 
 <row>
-  <%= form_for @site, url: favicons_path, html: { method: :get, class: "form-inline" } do |f| %>
+  <%= form_for @site, url: root_path, html: { method: :get, class: "form-inline" } do |f| %>
     <div class="col-sm-10 form-group">
       <%= f.text_field :input_url, value: @input_url, class: "col-sm-12 form-control" %>
     </div>

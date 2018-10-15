@@ -1,3 +1,4 @@
 Rails.application.routes.draw do
-  resources :favicons, only: [:index]
+  root :to => "favicons#index"
+
 end

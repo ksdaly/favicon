@@ -67,7 +67,7 @@ class Site < ApplicationRecord
         url
       end
 
-    host.gsub('www.', '')
+    host.gsub("www.", "")
   end
 
   def normalize_host(url)
