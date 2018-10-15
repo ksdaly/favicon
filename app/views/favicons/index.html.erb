@@ -1,0 +1,15 @@
+<h1>Favicon Finder</h1>
+
+<%= form_for @site, url: favicons_path, html: { method: :get } do |f| %>
+  <%= f.label :input_url, 'URL' %>:
+  <%= f.text_field :input_url %><br>
+  <%= f.submit "Lookup Favicon" %>
+<% end %>
+
+<% if @site.favicon_url %>
+  <img src= <%= @site.favicon_url %> width="16"/>
+<% else %>
+  <% if @site.persisted? %>
+    <div>Favicon could not be found </div>
+  <% end %>
+<% end %>
