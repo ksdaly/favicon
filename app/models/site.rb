@@ -11,9 +11,9 @@ class Site < ApplicationRecord
       if opts[:async]
         FaviconWorker.perform_async(row[1], opts)
       else
-        self.new.tap do |site|
+        self.new(host: row[1]).tap do |site|
           begin
-            site.fetch_favicon_url
+            site.fetch_favicon_url(opts)
             site.save
           rescue => e
             Rails.logger.error "unable to fetch favicon for #{ row[1] }: #{ e.class } - #{ e.message }"
@@ -50,7 +50,8 @@ class Site < ApplicationRecord
 
   def fetch_favicon_url(opts={})
     service = FaviconWebService.new(host, opts)
-    if service.fetch
+
+    service.fetch.tap do
       self.favicon_url = service.favicon_url
       self.last_url = service.last_url
     end

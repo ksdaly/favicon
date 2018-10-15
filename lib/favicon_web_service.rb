@@ -1,41 +1,34 @@
 class FaviconWebService < Struct.new(:host, :opts)
   attr_accessor :last_url, :favicon_url
 
-  def opts
-    @opts ||= {
-      verify: true,
-      async: false
-    }
-  end
-
   def fetch
-    if opts[:verify]
-      get_favicon_from_url || get_favicon_from_html
-    else
+    if opts[:naive]
       self.favicon_url = naive_favicon_url
+    else
+      get_favicon_from_url || get_favicon_from_html
     end
   end
 
   def get_favicon_from_url
     resp = HTTParty.get(naive_favicon_url)
-    return unless resp.code == 200
+    return nil unless resp.code == 200
 
-    self.last_url = resp.request.last_uri
+    self.last_url = URI.join(resp.request.last_uri, "/")
 
     case resp.response.content_type
     when "image/x-icon", "text/plain"
-      self.favicon_url = self.last_url
+      self.favicon_url = resp.request.last_uri
     when "text/html"
       self.favicon_url = find_favicon_uri(resp)
     else
-      return nil
+      self.favicon_url = nil
     end
   end
 
   def get_favicon_from_html
     resp = HTTParty.get(URI.parse(normalized_host_url))
 
-    return unless resp.code == 200
+    return nil unless resp.code == 200
 
     self.last_url = resp.request.last_uri
     self.favicon_url = find_favicon_uri(resp)
@@ -47,8 +40,8 @@ class FaviconWebService < Struct.new(:host, :opts)
 
     icons = parsed_body.xpath('//link[@rel="shortcut icon" or @rel="SHORTCUT ICON" or @rel="icon" or @rel="ICON"]')
 
-    if icon = icons.find { |icon| icon['href'] }
-      if favicon_uri = URI(icon['href'])
+    if icon = icons.find { |icon| icon["href"] }
+      if favicon_uri = URI(icon["href"])
         case favicon_uri
         when URI::HTTP
           favicon_uri
