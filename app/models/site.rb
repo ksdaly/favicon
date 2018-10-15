@@ -1,6 +1,6 @@
 class Site < ApplicationRecord
 
-  validates :host, presence: true, unique: true
+  validates :host, presence: true, uniqueness: true
 
   def self.batch_import(file_path, opts={})
     cnt = 0
