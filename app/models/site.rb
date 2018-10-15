@@ -61,7 +61,7 @@ class Site < ApplicationRecord
     uri = URI.parse(url)
     host =
       case uri
-      when URI::HTTP
+      when URI::HTTP, URI::HTTPS
         uri.host
       when URI::Generic
         url

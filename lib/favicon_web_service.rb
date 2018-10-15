@@ -16,7 +16,7 @@ class FaviconWebService < Struct.new(:host, :opts)
     self.last_url = URI.join(resp.request.last_uri, "/")
 
     case resp.response.content_type
-    when "image/x-icon", "text/plain"
+    when "image/x-icon", "image/vnd.microsoft.icon", "image/gif", "image/png", "image/svg+xml", "text/plain"
       self.favicon_url = resp.request.last_uri
     when "text/html"
       self.favicon_url = find_favicon_uri(resp)
@@ -43,7 +43,7 @@ class FaviconWebService < Struct.new(:host, :opts)
     if icon = icons.find { |icon| icon["href"] }
       if favicon_uri = URI(icon["href"])
         case favicon_uri
-        when URI::HTTP
+        when URI::HTTP, URI::HTTPS
           favicon_uri
         when URI::Generic
           if favicon_uri.to_s.include?(last_uri.host)

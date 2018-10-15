@@ -16,7 +16,7 @@
 <row>
   <div class="col-sm-12 icon-wrapper">
     <% if @site.favicon_url %>
-      <img src= <%= @site.favicon_url %> width="16"/>
+      <img src= <%= @site.favicon_url %> width="32" height="32"/>
     <% else %>
       <% if @site.persisted? %>
         <div class="col-sm-3">Favicon could not be found</div>
