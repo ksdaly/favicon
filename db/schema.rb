@@ -21,7 +21,7 @@ ActiveRecord::Schema.define(version: 2018_10_15_155516) do
     t.string "favicon_url"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["host"], name: "index_sites_on_host"
+    t.index ["host", "favicon_url"], name: "index_sites_on_host_and_favicon_url"
   end
 
 end
