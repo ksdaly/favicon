@@ -1,15 +1,26 @@
-<h1>Favicon Finder</h1>
+<row>
+  <div class="col-sm-12 favicon-heading-wrapper">
+    <h1>Favicon Finder</h1>
+  </div>
+</row>
 
-<%= form_for @site, url: favicons_path, html: { method: :get } do |f| %>
-  <%= f.label :input_url, 'URL' %>:
-  <%= f.text_field :input_url %><br>
-  <%= f.submit "Lookup Favicon" %>
-<% end %>
-
-<% if @site.favicon_url %>
-  <img src= <%= @site.favicon_url %> width="16"/>
-<% else %>
-  <% if @site.persisted? %>
-    <div>Favicon could not be found </div>
+<row>
+  <%= form_for @site, url: favicons_path, html: { method: :get, class: "form-inline" } do |f| %>
+    <div class="col-sm-10 form-group">
+      <%= f.text_field :input_url, class: "col-sm-12 form-control" %>
+    </div>
+    <%= f.submit "Find Favicon", class: "btn btn-default" %>
   <% end %>
-<% end %>
+</row>
+
+<row>
+  <div class="col-sm-12 icon-wrapper">
+    <% if @site.favicon_url %>
+      <img src= <%= @site.favicon_url %> width="16"/>
+    <% else %>
+      <% if @site.persisted? %>
+        <div class="col-sm-3">Favicon could not be found</div>
+      <% end %>
+    <% end %>
+  </div>
+</row>
