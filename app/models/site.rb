@@ -9,7 +9,7 @@ class Site < ApplicationRecord
       next unless row[1]
       
       if opts[:async]
-        FaviconWorker.perform_async(row[1], opts)
+        ::FaviconWorker.perform_async(row[1], opts)
       else
         self.new(host: row[1]).tap do |site|
           begin
@@ -30,7 +30,7 @@ class Site < ApplicationRecord
   end
 
   def self.find_by_input_url(input_url, opts={})
-    if site = Site.where(host: normalize_host(input_url)).first
+    if site = self.where(host: normalize_host(input_url)).first
       if opts[:refresh]
         site.fetch_favicon_url(opts)
         site.save
@@ -49,7 +49,7 @@ class Site < ApplicationRecord
   end
 
   def fetch_favicon_url(opts={})
-    service = FaviconWebService.new(host, opts)
+    service = ::FaviconWebService.new(host, opts)
 
     service.fetch.tap do
       self.favicon_url = service.favicon_url
