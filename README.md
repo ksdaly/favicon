@@ -46,8 +46,9 @@ Install gems
 bundle
 ```
 
-Create databases
+Create databases and migrate
 ```
+rake db:create
 rake db:migrate
 ```
 
