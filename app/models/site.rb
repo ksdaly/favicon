@@ -30,7 +30,7 @@ class Site < ApplicationRecord
   end
 
   def self.find_by_input_url_and_fetch_favicon_url(input_url, opts={})
-    if site = self.where(host: normalize_host(input_url)).first
+    if site = self.where(host: normalize_host(input_url)).select(:id, :host, :favicon_url).first
       if opts[:refresh]
         site.fetch_favicon_url(opts)
         site.save
