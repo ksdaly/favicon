@@ -22,6 +22,7 @@ General implementation notes:
   
 Dependencies: 
   * ruby 2.5.0
+  * rvm
   * redis
   * postgresql
   
@@ -30,9 +31,13 @@ Clone repo
 git clone git@github.com:ksdaly/favicon.git
 ```
 
-Install gems
+cd into app
 ```
 cd favicon
+```
+
+Install gems
+```
 bundle
 ```
 
@@ -45,7 +50,6 @@ Start sidekiq if needed
 ```
 bundle exec sidekiq
 ```
-
 
 Run batch import in Rails console
 ```
