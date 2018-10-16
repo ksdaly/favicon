@@ -42,20 +42,7 @@ class Site < ApplicationRecord
     end
     site
   end
-
-  def host=(val)
-    val ? super(normalize_host(val)) : val
-  end
-
-  def fetch_favicon_url(opts={})
-    service = FaviconWebService.new(host, opts)
-
-    service.fetch.tap do
-      self.favicon_url = service.favicon_url
-      self.last_url = service.last_url
-    end
-  end
-
+  
   def self.normalize_host(url)
     uri = URI.parse(url)
     host =
@@ -69,7 +56,20 @@ class Site < ApplicationRecord
     host.gsub("www.", "")
   end
 
+  def host=(val)
+    val ? super(normalize_host(val)) : val
+  end
+  
   def normalize_host(url)
     self.class.normalize_host(url)
+  end
+
+  def fetch_favicon_url(opts={})
+    service = FaviconWebService.new(host, opts)
+
+    service.fetch.tap do
+      self.favicon_url = service.favicon_url
+      self.last_url = service.last_url
+    end
   end
 end
